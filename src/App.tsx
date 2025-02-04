@@ -1,7 +1,9 @@
+import CreateMessage from './ui/CreateMessage';
+
 export default function App() {
   return (
-    <body className="">
-      <div className=""></div>
-    </body>
+    <div className="h-full dark:bg-zinc-900 dark:text-white">
+      <CreateMessage />
+    </div>
   );
 }
