@@ -1,7 +1,39 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+@theme {
+  --breakpoint-sm: 350px;
+}
 
 html,
 body,
 #root {
   height: 100%;
+  overflow: hidden;
+}
+
+.triangle-left,
+.triangle-right {
+  width: 20px;
+  height: 20px;
+  aspect-ratio: 1;
+  clip-path: polygon(100% 100%, 0 0, 100% 0);
+
+  --r: 2px; /* border radius */
+  --_g: calc(50% * (1 + 1 / tan(22.5deg)) - var(--r) / (3 * sqrt(2) - 4));
+  --_r: calc(var(--r) / tan(22.5deg)), #000 98%, #0000 101%;
+  mask: radial-gradient(var(--r) at top var(--r) left var(--_r)),
+    conic-gradient(
+      from 22.5deg at calc(100% - var(--_g)) var(--_g),
+      #000 90deg,
+      #0000 0
+    );
+}
+
+.triangle-left {
+  translate: 25%;
+}
+
+.triangle-right {
+  transform: scale(-1, 1);
+  translate: -25%;
 }
