@@ -1,6 +1,6 @@
-import CreateMessage from './CreateMessage'
-import Messages from './Messages'
-import ChatInfoBar from './TitleBar'
+import CreateMessage from '@/ui/chats/chat/CreateMessage'
+import Messages from '@/ui/chats/chat/Messages'
+import TitleBar from '@/ui/chats/chat/TitleBar'
 
 const messages = [
   { content: 'Hello there!', dateTime: '13:02' },
@@ -23,7 +23,7 @@ export default function Chat() {
         alt="Background decoration image"
         className="absolute h-full object-cover opacity-[1%]"
       />
-      <ChatInfoBar name={data.name} avatar={data.avatar} />
+      <TitleBar name={data.name} avatar={data.avatar} />
       <Messages messages={data.messages} />
       <CreateMessage />
     </div>

@@ -1,12 +1,11 @@
 import { useLayoutEffect, useRef } from 'react'
 
-import Message from './Message'
+import Message from '@/ui/chats/chat/Message'
+
+import * as types from '@/types'
 
 type MessagesProps = {
-  messages: {
-    content: string
-    dateTime: string
-  }[]
+  messages: types.Message[]
 }
 
 export default function Messages(props: MessagesProps) {

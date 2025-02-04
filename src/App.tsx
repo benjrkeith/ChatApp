@@ -1,4 +1,4 @@
-import Chat from './ui/chats/chat/Chat'
+import Chat from '@/ui/chats/chat/Chat'
 
 export default function App() {
   return (
