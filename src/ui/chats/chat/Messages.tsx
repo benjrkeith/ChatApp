@@ -17,15 +17,11 @@ export default function Messages(props: MessagesProps) {
   }, [])
 
   return (
-    <div className="grid grow overflow-scroll">
+    <div className="z-20 grid grow overflow-scroll">
       <div className="col-[1/1] row-[1/1] flex h-full w-full">
         <div className="mt-auto flex w-full flex-col gap-2 p-4">
           {messages.map((message) => (
-            <Message
-              key={message.dateTime}
-              content={message.content}
-              dateTime={message.dateTime}
-            />
+            <Message key={message.createdAt} data={message} />
           ))}
           <div className="float-left clear-both" ref={bottomRef} />
         </div>

@@ -4,7 +4,7 @@ export default function CreateMessage() {
       onSubmit={(e) => {
         e.preventDefault()
       }}
-      className="z-10 flex gap-6 bg-zinc-900 px-6 py-3 text-xl shadow-[10px_0px_10px] shadow-black/25"
+      className="z-20 flex gap-6 bg-zinc-900 px-6 py-3 text-xl shadow-[10px_0px_10px] shadow-black/25"
     >
       <button className="my-auto hidden h-8 w-8 min-w-[2rem] sm:block">
         <img

@@ -2,6 +2,7 @@
 
 @theme {
   --breakpoint-sm: 350px;
+  --breakpoint-md: 550px;
 }
 
 html,

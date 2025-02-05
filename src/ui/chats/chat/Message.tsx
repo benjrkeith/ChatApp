@@ -1,12 +1,13 @@
 import { clsx } from 'clsx'
 
+import * as types from '@/types'
+
 type MessageProps = {
-  content: string
-  dateTime: string
+  data: types.Message
 }
 
 export default function Message(props: MessageProps) {
-  const { content, dateTime } = props
+  const { content, createdAt } = props.data
 
   // This determines which side of the screen to render on, and also which
   // direction the triangle decoration should point.
@@ -23,7 +24,7 @@ export default function Message(props: MessageProps) {
         })}
       >
         <p className="text-xl">{content}</p>
-        <footer className="mt-auto h-fit text-xs">{dateTime}</footer>
+        <footer className="mt-auto h-fit text-xs">{createdAt}</footer>
       </div>
 
       {isOwnMessage && <div className="triangle-right bg-rose-500"></div>}

@@ -1,13 +1,14 @@
+import * as types from '@/types'
+
 type TitleBarProps = {
-  name: string
-  avatar: string
+  data: types.Chat
 }
 
 export default function TitleBar(props: TitleBarProps) {
-  const { name, avatar } = props
+  const { name, avatar } = props.data
 
   return (
-    <div className="z-10 flex gap-6 bg-zinc-900 px-6 py-3 shadow-[0px_10px_10px] shadow-black/25">
+    <div className="z-20 flex gap-6 bg-zinc-900 px-6 py-3 shadow-[0px_10px_10px] shadow-black/25">
       <img
         src={avatar}
         alt="Chat avatar"
