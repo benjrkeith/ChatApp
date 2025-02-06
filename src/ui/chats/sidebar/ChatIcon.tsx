@@ -12,7 +12,7 @@ export default function ChatIcon(props: ChatIconProps) {
 
   return (
     <div className="relative my-auto flex w-fit">
-      <Avatar url={avatar} />
+      <Avatar url={avatar} size="3rem" />
 
       {hasNotifications && (
         <div className="absolute w-full">

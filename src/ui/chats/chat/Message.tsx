@@ -15,15 +15,15 @@ export default function Message(props: MessageProps) {
 
   return (
     <div className="z-10 flex">
-      {!isOwnMessage && <div className="triangle-left bg-zinc-700"></div>}
+      {!isOwnMessage && <div className="triangle-left bg-zinc-700" />}
 
       <div
-        className={clsx('flex w-fit gap-2 rounded-md p-2', {
+        className={clsx('flex w-fit max-w-[60%] gap-4 rounded-md p-2', {
           'ml-auto bg-rose-500': isOwnMessage,
           'mr-auto bg-zinc-700': !isOwnMessage,
         })}
       >
-        <p className="text-xl">{content}</p>
+        <p className="">{content}</p>
         <footer className="mt-auto h-fit text-xs">{createdAt}</footer>
       </div>
 

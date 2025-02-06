@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <div className="flex h-full overflow-hidden">
       <Sidebar />
-      <div className="hidden h-full grow md:flex">
+      <div className="hidden h-full grow overflow-hidden md:flex">
         <Chat />
       </div>
     </div>

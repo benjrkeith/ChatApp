@@ -1,8 +1,16 @@
-export default function Avatar(props: { url: string }) {
+type AvatarProps = {
+  url: string
+  size: string
+}
+
+export default function Avatar(props: AvatarProps) {
+  const { url, size } = props
+
   return (
     <img
-      src={props.url}
-      className="h-12 w-12 min-w-[3rem] rounded-full object-cover"
+      src={url}
+      style={{ width: size, height: size, minWidth: size }}
+      className="aspect-square rounded-full object-cover"
     />
   )
 }

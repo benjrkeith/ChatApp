@@ -47,7 +47,7 @@ export default function Resizeable(props: ResizeableProps) {
       ?.classList.remove('select-none', 'cursor-col-resize')
   }
   return (
-    <div className="flex w-full md:w-fit">
+    <div className="flex w-full md:w-fit md:max-w-[50%]">
       <div
         style={{ width: size, minWidth: props.minWidth }}
         className="max-w-[100vw] grow"
