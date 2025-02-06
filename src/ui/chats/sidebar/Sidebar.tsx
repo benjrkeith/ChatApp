@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import { useState } from 'react'
 
 import Resizeable from '@/ui/chats/misc/Resizeable'
@@ -13,23 +12,14 @@ const data = {
 }
 
 export default function Sidebar() {
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [query, setQuery] = useState('')
 
   return (
-    <Resizeable isCollapsed={isCollapsed}>
-      <div
-        className={clsx('flex h-full flex-col bg-zinc-900 py-3', {
-          'gap-3': !isCollapsed,
-          'px-2': isCollapsed,
-        })}
-      >
-        <ProfileBar
-          isCollapsed={isCollapsed}
-          setIsCollapsed={setIsCollapsed}
-          data={data}
-        />
-        {!isCollapsed && <SearchBar />}
-        <ChatList isCollapsed={isCollapsed} />
+    <Resizeable minWidth={200}>
+      <div className="flex h-full flex-col gap-2 bg-zinc-900 p-2 pb-0">
+        <ProfileBar data={data} />
+        <SearchBar query={query} setQuery={setQuery} />
+        <ChatList query={query} />
       </div>
     </Resizeable>
   )

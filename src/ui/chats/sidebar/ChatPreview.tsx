@@ -17,6 +17,7 @@ export default function ChatPreview(props: ChatPreviewProps) {
         <h2 className="mt-auto min-w-0 truncate text-xl font-semibold">
           {name}
         </h2>
+
         <p className="mb-auto w-fit max-w-full truncate">
           {lastMessage?.content}
         </p>

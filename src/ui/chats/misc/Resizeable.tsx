@@ -1,21 +1,11 @@
-import clsx from 'clsx'
-import { PropsWithChildren, useEffect, useState } from 'react'
+import { PropsWithChildren, useState } from 'react'
 
 type ResizeableProps = PropsWithChildren<{
-  isCollapsed?: boolean
+  minWidth: number
 }>
 
 export default function Resizeable(props: ResizeableProps) {
-  const { isCollapsed = false, children } = props
   const [size, setSize] = useState<string | number>(250)
-
-  useEffect(() => {
-    if (isCollapsed) {
-      setSize('fit-content')
-    } else {
-      setSize(250)
-    }
-  }, [isCollapsed])
 
   const onMouseDown = () => {
     document.addEventListener('mousemove', onMouseMove)
@@ -59,21 +49,17 @@ export default function Resizeable(props: ResizeableProps) {
   return (
     <div className="flex w-full md:w-fit">
       <div
-        style={{ width: size }}
-        className={clsx('max-w-[100vw] grow', {
-          'min-w-[200px]': !isCollapsed,
-        })}
+        style={{ width: size, minWidth: props.minWidth }}
+        className="max-w-[100vw] grow"
       >
-        {children}
+        {props.children}
       </div>
 
-      {!isCollapsed && (
-        <div
-          onMouseDown={onMouseDown}
-          onTouchStart={onTouchStart}
-          className="relative z-10 hidden h-full w-[5px] cursor-col-resize bg-zinc-950 md:flex"
-        />
-      )}
+      <div
+        onMouseDown={onMouseDown}
+        onTouchStart={onTouchStart}
+        className="relative z-10 hidden h-full w-[5px] cursor-col-resize bg-zinc-950 md:flex"
+      />
     </div>
   )
 }

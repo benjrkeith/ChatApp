@@ -38,3 +38,12 @@ body,
   transform: scale(-1, 1);
   translate: -25%;
 }
+
+.hide-scroll {
+  scrollbar-width: none;
+}
+
+.filter-rose {
+  filter: brightness(0) saturate(100%) invert(35%) sepia(70%) saturate(7465%)
+    hue-rotate(335deg) brightness(107%) contrast(101%);
+}

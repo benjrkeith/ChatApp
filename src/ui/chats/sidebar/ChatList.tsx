@@ -1,6 +1,6 @@
-import clsx from 'clsx'
+import { debounce } from 'lodash'
+import { useRef, useState } from 'react'
 
-import ChatIcon from '@/ui/chats/sidebar/ChatIcon'
 import ChatPreview from '@/ui/chats/sidebar/ChatPreview'
 
 const data = [
@@ -31,21 +31,82 @@ const data = [
       createdAt: '17:43',
     },
   },
+  {
+    name: 'Dudes that are awesome and cool',
+    avatar: '/avatar.jpg',
+    notifications: 8,
+    lastMessage: {
+      content: 'Wazzup',
+      createdAt: '17:43',
+    },
+  },
+  {
+    name: 'Dudes that are awesome and cool',
+    avatar: '/avatar.jpg',
+    notifications: 8,
+    lastMessage: {
+      content: 'Wazzup',
+      createdAt: '17:43',
+    },
+  },
+  {
+    name: 'Dudes that are awesome and cool',
+    avatar: '/avatar.jpg',
+    notifications: 8,
+    lastMessage: {
+      content: 'Wazzup',
+      createdAt: '17:43',
+    },
+  },
+  {
+    name: 'Dudes that are awesome and cool',
+    avatar: '/avatar.jpg',
+    notifications: 8,
+    lastMessage: {
+      content: 'Wazzup',
+      createdAt: '17:43',
+    },
+  },
 ]
 
 type ChatListProps = {
-  isCollapsed: boolean
+  query: string
 }
 
-export default function ChatList(props: ChatListProps) {
-  const { isCollapsed = false } = props
-  const Component = isCollapsed ? ChatIcon : ChatPreview
+export default function ChatList({ query }: ChatListProps) {
+  const [atTop, setAtTop] = useState(true)
+  const scrollableRef = useRef<HTMLDivElement>(null)
+
+  const debounced = debounce((e) => setAtTop(e.target.scrollTop === 0), 300)
+  const filtered = data.filter((chat) =>
+    chat.name.toLocaleLowerCase().includes(query),
+  )
 
   return (
-    <div className={clsx('flex max-w-full flex-col gap-4 p-2', {})}>
-      {data.map((chat) => (
-        <Component data={chat} />
-      ))}
+    <div className="relative flex h-full overflow-hidden">
+      {!atTop && (
+        <div className="absolute z-20 flex w-full p-2">
+          <button
+            onClick={() => {
+              scrollableRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
+              setAtTop(true)
+            }}
+            className="mx-auto flex w-[40%] rounded-md bg-zinc-800 p-1"
+          >
+            <img src="icon-up.svg" className="filter-rose mx-auto h-7 w-7" />
+          </button>
+        </div>
+      )}
+
+      <div
+        onScroll={debounced}
+        ref={scrollableRef}
+        className="hide-scroll relative flex max-w-full flex-col overflow-scroll"
+      >
+        {filtered.map((chat) => (
+          <ChatPreview data={chat} />
+        ))}
+      </div>
     </div>
   )
 }

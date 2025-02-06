@@ -11,7 +11,7 @@ export default function ChatIcon(props: ChatIconProps) {
   const hasNotifications = (notifications as number) > 0
 
   return (
-    <div className="relative flex w-fit">
+    <div className="relative my-auto flex w-fit">
       <Avatar url={avatar} />
 
       {hasNotifications && (
