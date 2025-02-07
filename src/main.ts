@@ -4,7 +4,7 @@ import { createServer } from 'node:http'
 import { Server, Socket } from 'socket.io'
 
 import { onConnection } from '@/events/onConnection.js'
-import { verifyToken } from '@/middleware/verifyToken.js'
+import { verifyToken } from '@/middleware/index.js'
 import authRouter from '@/routes/auth.js'
 
 const app = express()

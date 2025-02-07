@@ -1,9 +1,8 @@
 import { Socket } from 'socket.io'
 
-import { onChat } from '@/events/onChat.js'
-import { onMessage } from '@/events/onMessage.js'
+import { onChat, onMessage, onSync } from '@/events/index.js'
 import { users } from '@/main.js'
-import { verifyJSON } from '@/middleware/verifyJSON.js'
+import { verifyJSON } from '@/middleware/index.js'
 
 export async function onConnection(socket: Socket) {
   const user_id = users.get(socket)
@@ -14,6 +13,7 @@ export async function onConnection(socket: Socket) {
   })
 
   socket.use(verifyJSON(socket))
+  socket.on('sync', onSync(socket))
   socket.on('chat', onChat(socket))
   socket.on('message', onMessage(socket))
 }

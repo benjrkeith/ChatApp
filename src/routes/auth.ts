@@ -4,7 +4,7 @@ import { Router } from 'express'
 import jwt from 'jsonwebtoken'
 
 import { prisma } from '@/main.js'
-import { checkCredentials } from '@/middleware/checkCredentials.js'
+import { checkCredentials } from '@/middleware/index.js'
 
 const router = Router()
 router.use(checkCredentials)
