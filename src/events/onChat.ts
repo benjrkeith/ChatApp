@@ -4,11 +4,11 @@ import { z } from 'zod'
 import { prisma, users } from '@/main.js'
 
 const schema = z.object({
-  chat_id: z.string().length(36),
-  content: z.string().min(1).max(1024),
+  name: z.string().min(1).max(64),
+  users: z.array(z.string().length(36)).min(1),
 })
 
-export function onMessage(socket: Socket) {
+export function onChat(socket: Socket) {
   return async (payload: z.infer<typeof schema>) => {
     const parsed = schema.safeParse(payload)
     if (!parsed.success) {
@@ -22,14 +22,21 @@ export function onMessage(socket: Socket) {
       return
     }
 
-    const message = await prisma.message.create({
+    const members = new Set([user_id, ...parsed.data.users])
+    if (members.size <= 1) {
+      socket.emit('error', { message: 'Bad request' })
+      return
+    }
+
+    const chat = await prisma.chat.create({
       data: {
-        author_id: user_id,
-        chat_id: parsed.data.chat_id,
-        content: parsed.data.content,
+        name: parsed.data.name,
+        memberships: {
+          create: [...members].map((user_id) => ({ user_id })),
+        },
       },
     })
 
-    socket.emit('message', message)
+    socket.emit('chat', chat)
   }
 }

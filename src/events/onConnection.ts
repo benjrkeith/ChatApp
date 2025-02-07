@@ -1,21 +1,19 @@
 import { Socket } from 'socket.io'
 
+import { onChat } from '@/events/onChat.js'
 import { onMessage } from '@/events/onMessage.js'
+import { users } from '@/main.js'
+import { verifyJSON } from '@/middleware/verifyJSON.js'
 
 export async function onConnection(socket: Socket) {
-  console.log('Client connected')
+  const user_id = users.get(socket)
+  console.log(`${user_id} - Client connected`)
 
-  socket.on('disconnect', () => console.log('Client disconnected'))
-
-  socket.on('join', (room) => {
-    socket.join(room)
-    console.log(`Client joined room ${room}`)
+  socket.on('disconnect', () => {
+    console.log(`${user_id} - Client disconnected`)
   })
 
-  socket.on('leave', (room) => {
-    socket.leave(room)
-    console.log(`Client left room ${room}`)
-  })
-
+  socket.use(verifyJSON(socket))
+  socket.on('chat', onChat(socket))
   socket.on('message', onMessage(socket))
 }

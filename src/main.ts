@@ -1,12 +1,11 @@
 import { PrismaClient } from '@prisma/client'
 import express from 'express'
 import { createServer } from 'node:http'
-import { Server } from 'socket.io'
+import { Server, Socket } from 'socket.io'
 
+import { onConnection } from '@/events/onConnection.js'
 import { verifyToken } from '@/middleware/verifyToken.js'
 import authRouter from '@/routes/auth.js'
-
-import { onConnection } from './events/onConnection.js'
 
 const app = express()
 app.use(express.json())
@@ -20,4 +19,5 @@ const io = new Server(server)
 io.use(verifyToken)
 io.on('connection', onConnection)
 
+export const users = new WeakMap<Socket, string>()
 export const prisma = new PrismaClient()
