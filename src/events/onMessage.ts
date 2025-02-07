@@ -1,7 +1,8 @@
 import { Socket } from 'socket.io'
 import { z } from 'zod'
 
-import { prisma, users } from '@/main.js'
+import { createMessage } from '@/lib/createMessage.js'
+import { users } from '@/main.js'
 
 const schema = z.object({
   chat_id: z.string().length(36),
@@ -11,25 +12,14 @@ const schema = z.object({
 export function onMessage(socket: Socket) {
   return async (payload: z.infer<typeof schema>) => {
     const parsed = schema.safeParse(payload)
-    if (!parsed.success) {
-      socket.emit('error', parsed.error.flatten().fieldErrors)
-      return
-    }
+    if (!parsed.success)
+      return socket.emit('error', parsed.error.flatten().fieldErrors)
 
     const user_id = users.get(socket)
-    if (!user_id) {
-      socket.emit('error', { message: 'Unauthorized' })
-      return
-    }
+    if (!user_id) return socket.emit('error', { message: 'Unauthorized' })
 
-    const message = await prisma.message.create({
-      data: {
-        author_id: user_id,
-        chat_id: parsed.data.chat_id,
-        content: parsed.data.content,
-      },
-    })
-
-    socket.emit('message', message)
+    const { chat_id, content } = parsed.data
+    const message = await createMessage(user_id, chat_id, content)
+    socket.to(chat_id).emit('message', message)
   }
 }
