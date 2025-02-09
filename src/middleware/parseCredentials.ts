@@ -6,12 +6,14 @@ const credentialsSchema = z.object({
   password: z.string().min(3).max(64),
 })
 
-export async function checkCredentials(
+export async function parseCredentials(
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
   const parsed = credentialsSchema.safeParse(req.body)
-  if (parsed.success) next()
-  else res.status(400).json(parsed.error.flatten().fieldErrors)
+  if (parsed.success) {
+    res.locals.credentials = parsed.data
+    next()
+  } else res.status(400).json(parsed.error.flatten().fieldErrors)
 }

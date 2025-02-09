@@ -4,20 +4,26 @@ import { Router } from 'express'
 import jwt from 'jsonwebtoken'
 
 import { prisma } from '@/main.js'
-import { checkCredentials } from '@/middleware/index.js'
+import { parseCredentials } from '@/middleware/index.js'
 
-const router = Router()
-router.use(checkCredentials)
+export const router = Router()
+router.use(parseCredentials)
 
 router.post('/register', async (req, res) => {
-  const { username, password } = req.body
+  const { username, password } = res.locals.credentials
   const passwordHash = await hash(password)
 
   try {
     await prisma.user.create({
-      data: { username, password: passwordHash },
-      select: { id: true },
+      data: {
+        username,
+        password: passwordHash,
+      },
+      select: {
+        id: true,
+      },
     })
+
     res.sendStatus(201)
   } catch (error) {
     if (!(error instanceof PrismaClientKnownRequestError)) throw error
@@ -27,11 +33,16 @@ router.post('/register', async (req, res) => {
 })
 
 router.post('/login', async (req, res) => {
-  const { username, password } = req.body
+  const { username, password } = res.locals.credentials
   const user = await prisma.user.findUnique({
     where: { username },
-    select: { id: true, username: true, password: true },
+    select: {
+      id: true,
+      username: true,
+      password: true,
+    },
   })
+
   if (!user) {
     res.sendStatus(404)
     return
@@ -46,8 +57,8 @@ router.post('/login', async (req, res) => {
   const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string, {
     expiresIn: Number(process.env.JWT_EXPIRES_IN),
   })
+  res.cookie('token', token, { httpOnly: true }).sendStatus(200)
 
-  res.json({ id: user.id, token })
   await prisma.user.update({
     data: { last_login: new Date() },
     where: { id: user.id },

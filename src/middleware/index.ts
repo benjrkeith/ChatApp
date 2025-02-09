@@ -1,3 +1,3 @@
-export * from '@/middleware/checkCredentials.js'
-export * from '@/middleware/verifyJSON.js'
-export * from '@/middleware/verifyToken.js'
+export * from '@/middleware/parseCredentials.js'
+export * from '@/middleware/isBodyJSON.js'
+export * from '@/middleware/isJwtValid.js'
