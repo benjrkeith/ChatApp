@@ -1,11 +1,11 @@
 import { prisma } from '@/main.js'
 
-export async function createMessage(
+export function createMessage(
   user_id: string,
   chat_id: string,
   content: string,
 ) {
-  return await prisma.message.create({
+  return prisma.message.create({
     data: {
       author_id: user_id,
       chat_id: chat_id,
@@ -19,6 +19,18 @@ export async function createMessage(
           avatar: true,
         },
       },
+      chat: {
+        select: {
+          id: true,
+          name: true,
+          avatar: true,
+        },
+      },
+    },
+    omit: {
+      updated_at: true,
+      author_id: true,
+      chat_id: true,
     },
   })
 }

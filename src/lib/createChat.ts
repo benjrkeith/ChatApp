@@ -1,12 +1,16 @@
 import { prisma } from '@/main.js'
 
-export async function createChat(name: string, users: Set<string>) {
-  return await prisma.chat.create({
+export function createChat(name: string, user_ids: Set<string>) {
+  return prisma.chat.create({
     data: {
       name: name,
       memberships: {
-        create: [...users].map((user_id) => ({ user_id })),
+        create: [...user_ids].map((user_id) => ({ user_id })),
       },
+    },
+    select: {
+      id: true,
+      name: true,
     },
   })
 }

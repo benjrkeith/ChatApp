@@ -1,28 +1,30 @@
 import { Socket } from 'socket.io'
 import { z } from 'zod'
 
-import { createChat } from '@/lib/index.js'
+import { createChat } from '@/lib/createChat.js'
 import { users } from '@/main.js'
-
-const schema = z.object({
-  name: z.string().min(1).max(64),
-  users: z.array(z.string().length(36)).min(1),
-})
+import { chatSchema } from '@/schemas/chat.js'
 
 export function onChat(socket: Socket) {
-  return async (payload: z.infer<typeof schema>) => {
-    const parsed = schema.safeParse(payload)
+  return async (payload: z.infer<typeof chatSchema>) => {
+    const user = users.getUser(socket)
+    if (!user?.id) return socket.disconnect()
+
+    const parsed = chatSchema.safeParse(payload)
     if (!parsed.success)
       return socket.emit('error', parsed.error.flatten().fieldErrors)
 
-    const user_id = users.get(socket)
-    if (!user_id) return socket.emit('error', { message: 'Unauthorized' })
-
-    const members = new Set([user_id, ...parsed.data.users])
+    const members = new Set([user.id, ...parsed.data.users])
     if (members.size <= 1)
       return socket.emit('error', { message: 'Bad request' })
 
-    const chat = createChat(parsed.data.name, members)
-    socket.emit('chat', chat)
+    const chat = await createChat(parsed.data.name, members)
+    for (const id of members.entries()) {
+      const targetSocket = users.getSocket(id[0])
+      if (targetSocket) {
+        targetSocket.join(chat.id)
+      }
+    }
+    socket.to(chat.id).emit('chat', chat)
   }
 }

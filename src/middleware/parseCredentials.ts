@@ -1,10 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
-import { z } from 'zod'
 
-const credentialsSchema = z.object({
-  username: z.string().min(3).max(64),
-  password: z.string().min(3).max(64),
-})
+import { credentialsSchema } from '@/schemas/credentials.js'
 
 export async function parseCredentials(
   req: Request,

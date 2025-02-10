@@ -4,12 +4,12 @@ import { Router } from 'express'
 import jwt from 'jsonwebtoken'
 
 import { prisma } from '@/main.js'
-import { parseCredentials } from '@/middleware/index.js'
+import { parseCredentials } from '@/middleware/parseCredentials.js'
 
-export const router = Router()
-router.use(parseCredentials)
+export const authRouter = Router()
+authRouter.use(parseCredentials)
 
-router.post('/register', async (req, res) => {
+authRouter.post('/register', async (req, res) => {
   const { username, password } = res.locals.credentials
   const passwordHash = await hash(password)
 
@@ -19,9 +19,7 @@ router.post('/register', async (req, res) => {
         username,
         password: passwordHash,
       },
-      select: {
-        id: true,
-      },
+      select: { id: true },
     })
 
     res.sendStatus(201)
@@ -32,14 +30,15 @@ router.post('/register', async (req, res) => {
   }
 })
 
-router.post('/login', async (req, res) => {
-  const { username, password } = res.locals.credentials
+authRouter.post('/login', async (req, res) => {
+  const { credentials } = res.locals
   const user = await prisma.user.findUnique({
-    where: { username },
+    where: { username: credentials.username },
     select: {
       id: true,
       username: true,
       password: true,
+      avatar: true,
     },
   })
 
@@ -48,21 +47,20 @@ router.post('/login', async (req, res) => {
     return
   }
 
-  const isValid = await verify(user.password, password)
+  const { password, ...rest } = user
+  const isValid = await verify(password, credentials.password)
   if (!isValid) {
     res.sendStatus(401)
     return
   }
 
-  const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string, {
+  const token = jwt.sign({ user: rest }, process.env.JWT_SECRET as string, {
     expiresIn: Number(process.env.JWT_EXPIRES_IN),
   })
   res.cookie('token', token, { httpOnly: true }).sendStatus(200)
 
   await prisma.user.update({
     data: { last_login: new Date() },
-    where: { id: user.id },
+    where: { id: rest.id },
   })
 })
-
-export default router

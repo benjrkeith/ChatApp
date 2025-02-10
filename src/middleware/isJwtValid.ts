@@ -1,3 +1,4 @@
+import { User } from '@prisma/client'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import { Socket } from 'socket.io'
 
@@ -10,7 +11,7 @@ export async function isJwtValid(socket: Socket, next: (err?: Error) => void) {
   jwt.verify(token, process.env.JWT_SECRET as string, (err, decoded) => {
     if (err || !decoded) return next(new Error('Invalid auth token provided'))
 
-    users.set(socket, (decoded as JwtPayload).id)
+    users.set((decoded as JwtPayload).user as Partial<User>, socket)
     next()
   })
 }
