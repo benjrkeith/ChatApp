@@ -47,3 +47,13 @@ body,
   filter: brightness(0) saturate(100%) invert(35%) sepia(70%) saturate(7465%)
     hue-rotate(335deg) brightness(107%) contrast(101%);
 }
+
+.filter-zinc {
+  filter: brightness(0) saturate(100%) invert(14%) sepia(6%) saturate(503%)
+    hue-rotate(202deg) brightness(95%) contrast(94%);
+}
+
+.filter-cyan {
+  filter: brightness(0) saturate(100%) invert(76%) sepia(46%) saturate(6189%)
+    hue-rotate(147deg) brightness(92%) contrast(101%);
+}

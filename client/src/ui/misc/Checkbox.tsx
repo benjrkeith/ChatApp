@@ -33,7 +33,7 @@ export default function Checkbox({ action }: CheckboxProps) {
         )}
       >
         <img
-          src="icon-tick.svg"
+          src="/icon-tick.svg"
           className={clsx(
             'aspect-square h-4 w-4 p-[0.1rem] transition-all duration-100 ease-out',
             {
