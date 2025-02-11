@@ -58,7 +58,7 @@ export default function Resizeable(props: ResizeableProps) {
       <div
         onMouseDown={onMouseDown}
         onTouchStart={onTouchStart}
-        className="relative z-10 hidden h-full w-[5px] cursor-col-resize bg-zinc-950 md:flex"
+        className="relative z-10 hidden h-full w-[8px] cursor-col-resize bg-zinc-900 md:flex"
       />
     </div>
   )

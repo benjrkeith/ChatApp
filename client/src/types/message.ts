@@ -1,3 +1,4 @@
+import { Chat } from '@/types/chat'
 import { User } from '@/types/user'
 
 export type Message = {
@@ -8,4 +9,5 @@ export type Message = {
   system: boolean
   author: User
   chat_id: string
+  chat: Chat
 }

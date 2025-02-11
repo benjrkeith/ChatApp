@@ -1,5 +1,9 @@
+import { Link } from 'react-router'
+
 import ChatIcon from '@/ui/chats/sidebar/ChatIcon'
 
+import { getDateTimeString } from '@/lib/getDateTimeString'
+import { translateSysMessage } from '@/lib/translateSysMessage'
 import * as types from '@/types'
 
 type ChatPreviewProps = {
@@ -7,10 +11,13 @@ type ChatPreviewProps = {
 }
 
 export default function ChatPreview(props: ChatPreviewProps) {
-  const { name, lastMessage } = props.data
+  const { id, name, messages } = props.data
 
   return (
-    <div className="group flex max-w-full gap-4 rounded-lg p-2 hover:bg-zinc-800">
+    <Link
+      to={`/chats/${id}`}
+      className="group flex max-w-full gap-3 rounded-lg p-2 hover:bg-zinc-900"
+    >
       <ChatIcon data={props.data} />
 
       <div className="flex min-w-0 grow flex-col">
@@ -19,17 +26,19 @@ export default function ChatPreview(props: ChatPreviewProps) {
         </h2>
 
         <p className="mb-auto w-fit max-w-full truncate">
-          {lastMessage?.content}
+          {translateSysMessage(messages[0])}
         </p>
       </div>
 
-      <div className="my-auto flex flex-col gap-1">
-        <footer className="text-end text-sm">{lastMessage?.createdAt}</footer>
+      <div className="flex flex-col gap-1">
+        <footer className="mb-auto py-1 text-end text-sm">
+          {getDateTimeString(messages[0].created_at)}
+        </footer>
 
-        <button className="invisible my-auto ml-auto min-h-[1.25rem] w-fit opacity-75 group-hover:visible">
+        {/* <button className="invisible my-auto ml-auto min-h-[1.25rem] w-fit opacity-75 group-hover:visible">
           <img src="icon-pin.svg" className="h-4 w-4 invert" />
-        </button>
+        </button> */}
       </div>
-    </div>
+    </Link>
   )
 }

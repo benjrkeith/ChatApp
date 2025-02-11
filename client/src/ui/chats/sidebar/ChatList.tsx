@@ -3,71 +3,7 @@ import { useRef, useState } from 'react'
 
 import ChatPreview from '@/ui/chats/sidebar/ChatPreview'
 
-const data = [
-  {
-    name: 'Jedi Council',
-    avatar: '/avatar.jpg',
-    notifications: 3,
-    lastMessage: {
-      content: 'Hello there!',
-      createdAt: '12:23',
-    },
-  },
-  {
-    name: 'The Boys',
-    avatar: '/avatar.jpg',
-    notifications: 0,
-    lastMessage: {
-      content: 'Hi!',
-      createdAt: '09:12',
-    },
-  },
-  {
-    name: 'Dudes that are awesome and cool',
-    avatar: '/avatar.jpg',
-    notifications: 8,
-    lastMessage: {
-      content: 'Wazzup',
-      createdAt: '17:43',
-    },
-  },
-  {
-    name: 'Dudes that are awesome and cool',
-    avatar: '/avatar.jpg',
-    notifications: 8,
-    lastMessage: {
-      content: 'Wazzup',
-      createdAt: '17:43',
-    },
-  },
-  {
-    name: 'Dudes that are awesome and cool',
-    avatar: '/avatar.jpg',
-    notifications: 8,
-    lastMessage: {
-      content: 'Wazzup',
-      createdAt: '17:43',
-    },
-  },
-  {
-    name: 'Dudes that are awesome and cool',
-    avatar: '/avatar.jpg',
-    notifications: 8,
-    lastMessage: {
-      content: 'Wazzup',
-      createdAt: '17:43',
-    },
-  },
-  {
-    name: 'Dudes that are awesome and cool',
-    avatar: '/avatar.jpg',
-    notifications: 8,
-    lastMessage: {
-      content: 'Wazzup',
-      createdAt: '17:43',
-    },
-  },
-]
+import { useStore } from '@/hooks/useStore'
 
 type ChatListProps = {
   query: string
@@ -75,25 +11,29 @@ type ChatListProps = {
 
 export default function ChatList({ query }: ChatListProps) {
   const [atTop, setAtTop] = useState(true)
+  const { chats } = useStore()
   const scrollableRef = useRef<HTMLDivElement>(null)
 
   const debounced = debounce((e) => setAtTop(e.target.scrollTop === 0), 300)
-  const filtered = data.filter((chat) =>
+  const filtered = chats.filter((chat) =>
     chat.name.toLocaleLowerCase().includes(query),
   )
 
   return (
-    <div className="relative flex h-full overflow-hidden">
+    <div className="relative flex h-full overflow-hidden px-1">
       {!atTop && (
         <div className="absolute z-20 flex w-full p-2">
           <button
+            className="mx-auto flex w-[30%] rounded-md bg-zinc-900 p-1"
             onClick={() => {
-              scrollableRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
               setAtTop(true)
+              scrollableRef.current?.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+              })
             }}
-            className="mx-auto flex w-[40%] rounded-md bg-zinc-800 p-1"
           >
-            <img src="icon-up.svg" className="filter-rose mx-auto h-7 w-7" />
+            <img src="/icon-up.svg" className="filter-cyan mx-auto h-8 w-8" />
           </button>
         </div>
       )}
@@ -101,10 +41,10 @@ export default function ChatList({ query }: ChatListProps) {
       <div
         onScroll={debounced}
         ref={scrollableRef}
-        className="hide-scroll relative flex max-w-full flex-col overflow-scroll"
+        className="hide-scroll relative flex w-full max-w-full flex-col overflow-scroll"
       >
         {filtered.map((chat) => (
-          <ChatPreview data={chat} />
+          <ChatPreview key={chat.id} data={chat} />
         ))}
       </div>
     </div>

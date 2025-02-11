@@ -1,3 +1,5 @@
+import { useRef } from 'react'
+
 type SearchBarProps = {
   query: string
   setQuery: (query: string) => void
@@ -5,22 +7,28 @@ type SearchBarProps = {
 
 export default function SearchBar(props: SearchBarProps) {
   const { query, setQuery } = props
+  const ref = useRef<HTMLInputElement>(null)
 
   return (
-    <div className="px-2">
-      <div className="flex w-full min-w-[8rem] gap-4 rounded-sm bg-zinc-800 px-4 py-3 outline-none focus-within:ring-2 focus-within:ring-rose-500">
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          type="text"
-          placeholder="Search"
-          className="h-full min-w-[3rem] grow outline-none"
-        />
+    <div
+      onClick={() => {
+        ref.current?.focus()
+      }}
+      className="group flex w-full min-w-[8rem] cursor-text gap-4 rounded-sm bg-zinc-800 px-3 py-3 outline-none focus-within:ring-1 focus-within:ring-cyan-500 hover:ring-1 hover:ring-cyan-500"
+    >
+      <input
+        value={query}
+        ref={ref}
+        onChange={(e) => setQuery(e.target.value)}
+        type="text"
+        placeholder="Search..."
+        className="min-w-[2rem] grow text-lg outline-none"
+      />
 
-        <button className="min-w-[1.25rem]">
-          <img src="icon-search.svg" className="h-5 w-5 invert" />
-        </button>
-      </div>
+      <img
+        src="/icon-search.svg"
+        className="my-auto h-5 w-5 min-w-[1.25rem] invert"
+      />
     </div>
   )
 }

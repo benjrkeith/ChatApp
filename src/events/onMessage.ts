@@ -16,6 +16,6 @@ export function onMessage(socket: Socket) {
 
     const { chat_id, content } = parsed.data
     const message = await createMessage(user.id, chat_id, content)
-    socket.to(chat_id).emit('message', message)
+    socket.to(chat_id).emit('message', message[0])
   }
 }

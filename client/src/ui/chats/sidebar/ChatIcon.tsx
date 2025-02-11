@@ -7,17 +7,16 @@ type ChatIconProps = {
 }
 
 export default function ChatIcon(props: ChatIconProps) {
-  const { avatar, notifications } = props.data
-  const hasNotifications = (notifications as number) > 0
+  const { name, avatar } = props.data
 
   return (
     <div className="relative my-auto flex w-fit">
-      <Avatar url={avatar} size="3rem" />
+      <Avatar name={name} url={avatar} size="3rem" style="circle" />
 
-      {hasNotifications && (
+      {false && (
         <div className="absolute w-full">
           <p className="ml-auto flex aspect-square h-5 w-5 rounded-full bg-rose-500">
-            <span className="m-auto text-sm font-bold">{notifications}</span>
+            <span className="m-auto text-sm font-bold">{0}</span>
           </p>
         </div>
       )}

@@ -1,13 +1,13 @@
-import Chat from '@/ui/chats/chat/Chat'
 import Sidebar from '@/ui/chats/sidebar/Sidebar'
 
+import { useSocket } from '@/hooks/useSocket'
+
 export default function Page() {
+  useSocket()
+
   return (
-    <div className="flex h-full overflow-hidden">
+    <div className="flex h-full overflow-hidden bg-zinc-800 text-white">
       <Sidebar />
-      <div className="hidden h-full grow overflow-hidden md:flex">
-        <Chat />
-      </div>
     </div>
   )
 }
