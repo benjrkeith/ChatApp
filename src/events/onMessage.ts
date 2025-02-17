@@ -5,6 +5,7 @@ import { createMessage } from '@/lib/createMessage.js'
 import { users } from '@/main.js'
 import { messageSchema } from '@/schemas/message.js'
 
+// users can create messages in chats they aren't apart of !
 export function onMessage(socket: Socket) {
   return async (payload: z.infer<typeof messageSchema>) => {
     const user = users.getUser(socket)
@@ -16,6 +17,8 @@ export function onMessage(socket: Socket) {
 
     const { chat_id, content } = parsed.data
     const message = await createMessage(user.id, chat_id, content)
-    socket.to(chat_id).emit('message', message[0])
+
+    socket.broadcast.to(chat_id).emit('message', message[0])
+    socket.emit('message', message[0])
   }
 }

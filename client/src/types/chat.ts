@@ -9,4 +9,5 @@ export type Chat = {
   avatar: string
   users?: User[]
   messages: Message[]
+  fetched?: boolean
 }

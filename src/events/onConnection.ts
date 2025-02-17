@@ -1,6 +1,7 @@
 import { Socket } from 'socket.io'
 
 import { onChat } from '@/events/onChat.js'
+import { onHistory } from '@/events/onHistory.js'
 import { onMessage } from '@/events/onMessage.js'
 import { getChats } from '@/lib/getChats.js'
 import { users } from '@/main.js'
@@ -22,4 +23,5 @@ export async function onConnection(socket: Socket) {
   socket.use(isBodyJson(socket))
   socket.on('chat', onChat(socket))
   socket.on('message', onMessage(socket))
+  socket.on('history', onHistory(socket))
 }
