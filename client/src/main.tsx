@@ -1,4 +1,5 @@
-import { StrictMode } from 'react'
+import { enableMapSet } from 'immer'
+// import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router'
 
@@ -9,20 +10,21 @@ import ChatsPage from '@/ui/chats/Page'
 
 import '@/main.css'
 
+enableMapSet()
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route index element={<Navigate to="chats" />} />
+  // <StrictMode>
+  <BrowserRouter>
+    <Routes>
+      <Route index element={<Navigate to="chats" />} />
 
-        <Route path="auth" element={<AuthPage />}>
-          <Route index element={<Navigate to="login" />} />
-          <Route path="register" element={<Register />} />
-          <Route path="login" element={<Login />} />
-        </Route>
+      <Route path="auth" element={<AuthPage />}>
+        <Route index element={<Navigate to="login" />} />
+        <Route path="register" element={<Register />} />
+        <Route path="login" element={<Login />} />
+      </Route>
 
-        <Route path="chats/*" element={<ChatsPage />} />
-      </Routes>
-    </BrowserRouter>
-  </StrictMode>,
+      <Route path="chats/*" element={<ChatsPage />} />
+    </Routes>
+  </BrowserRouter>,
+  // </StrictMode>,
 )

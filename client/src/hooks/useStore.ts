@@ -1,26 +1,38 @@
 import { create } from 'zustand'
+import { immer } from 'zustand/middleware/immer'
 
 import * as types from '@/types'
 
-export const useStore = create<types.Store>((set) => ({
-  user: null,
-  setUser: (user) => set({ user }),
+export const useStore = create<types.Store>()(
+  immer((set) => ({
+    user: null,
+    setUser: (user) => set({ user }),
 
-  chats: [],
-  setChats: (chats) => set({ chats }),
-  addChat: (chat) => set((state) => ({ chats: [chat, ...state.chats] })),
+    chats: new Map<string, types.Chat>(),
+    addChat: (chat) => set((state) => state.chats.set(chat.id, chat)),
+    setChats: (chats) =>
+      set({ chats: new Map(chats.map((chat) => [chat.id, chat])) }),
 
-  addMessage: (message) =>
-    set((state) => {
-      const chat = state.chats.filter((chat, idx, arr) => {
-        if (chat.id === message.chat.id) {
-          arr.splice(idx, 1)
-          return true
-        }
-        return false
-      })
+    setFetched: (chat_id: string) =>
+      set((state) => {
+        const chat = state.chats.get(chat_id)
+        if (chat) chat.fetched = true
+      }),
 
-      chat[0].messages = [message, ...chat[0].messages]
-      return { chats: [chat[0], ...state.chats] }
-    }),
-}))
+    addMessage: (message) =>
+      set((state) => {
+        const chat = state.chats.get(message.chat.id)
+        if (!chat) return
+        chat.messages.unshift(message)
+      }),
+
+    addMessages: (chat_id, messages) =>
+      set((state) => {
+        const chat = state.chats.get(chat_id)
+        if (!chat) return
+
+        if (messages.length === 0) chat.fetched = true
+        else chat.messages.push(...messages)
+      }),
+  })),
+)

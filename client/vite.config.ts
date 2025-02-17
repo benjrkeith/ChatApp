@@ -6,7 +6,10 @@ import { defineConfig } from 'vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  server: { watch: { usePolling: true } },
+  server: {
+    watch: { usePolling: true },
+    host: '0.0.0.0',
+  },
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
