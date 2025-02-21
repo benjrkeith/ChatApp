@@ -1,7 +1,10 @@
+import clsx from 'clsx'
 import { PropsWithChildren, useState } from 'react'
 
 type ResizeableProps = PropsWithChildren<{
   minWidth: number
+  maxWidth: number
+  isHidden: boolean
 }>
 
 export default function Resizeable(props: ResizeableProps) {
@@ -24,11 +27,14 @@ export default function Resizeable(props: ResizeableProps) {
   }
 
   const onMouseMove = (e: MouseEvent) => {
-    setSize(e.clientX - 5)
+    if (e.clientX > props.minWidth && e.clientX < props.maxWidth)
+      setSize(e.clientX - 4)
   }
 
   const onTouchMove = (e: TouchEvent) => {
-    setSize(e.touches[0].clientX - 5)
+    const touch = e.touches[0]
+    if (touch.clientX > props.minWidth && touch.clientX < props.maxWidth)
+      setSize(touch.clientX - 4)
   }
 
   const onTouchStart = () => {
@@ -47,9 +53,18 @@ export default function Resizeable(props: ResizeableProps) {
       ?.classList.remove('select-none', 'cursor-col-resize')
   }
   return (
-    <div className="flex w-full md:w-fit md:max-w-[50%]">
+    <div
+      className={clsx(
+        'relative flex w-full border-[8px] border-zinc-900 md:w-fit',
+        { 'hidden md:flex': props.isHidden },
+      )}
+    >
       <div
-        style={{ width: size, minWidth: props.minWidth }}
+        style={{
+          width: size,
+          minWidth: props.minWidth,
+          maxWidth: props.maxWidth,
+        }}
         className="max-w-[100vw] grow"
       >
         {props.children}
@@ -58,7 +73,7 @@ export default function Resizeable(props: ResizeableProps) {
       <div
         onMouseDown={onMouseDown}
         onTouchStart={onTouchStart}
-        className="relative z-10 hidden h-full w-[8px] cursor-col-resize bg-zinc-900 md:flex"
+        className="absolute right-0 z-10 hidden h-full w-[8px] translate-x-2 cursor-col-resize md:flex"
       />
     </div>
   )

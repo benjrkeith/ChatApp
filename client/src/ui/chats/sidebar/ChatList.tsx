@@ -15,7 +15,7 @@ export default function ChatList({ query }: ChatListProps) {
   const scrollableRef = useRef<HTMLDivElement>(null)
 
   const debounced = debounce((e) => setAtTop(e.target.scrollTop === 0), 300)
-  const filtered = chats.filter((chat) =>
+  const filtered = Array.from(chats.values()).filter((chat) =>
     chat.name.toLocaleLowerCase().includes(query),
   )
 
@@ -24,7 +24,7 @@ export default function ChatList({ query }: ChatListProps) {
       {!atTop && (
         <div className="absolute z-20 flex w-full p-2">
           <button
-            className="mx-auto flex w-[30%] rounded-md bg-zinc-900 p-1"
+            className="mx-auto flex w-[60px] rounded-md bg-zinc-900 p-1"
             onClick={() => {
               setAtTop(true)
               scrollableRef.current?.scrollTo({

@@ -16,7 +16,7 @@ export default function ChatPreview(props: ChatPreviewProps) {
   return (
     <Link
       to={`/chats/${id}`}
-      className="group flex max-w-full gap-3 rounded-lg p-2 hover:bg-zinc-900"
+      className="group my-1 flex max-w-full gap-3 rounded-lg px-2 py-1 hover:bg-zinc-900"
     >
       <ChatIcon data={props.data} />
 

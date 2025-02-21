@@ -10,7 +10,6 @@ export async function getHistory(
   chat_id: string,
   skip: number,
 ): Promise<types.Message[]> {
-  console.log('Getting history')
   const payload = { chat_id, skip }
   const res = (await waitFor('history', payload)) as Res
   return res.messages
