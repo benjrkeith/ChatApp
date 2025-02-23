@@ -1,9 +1,9 @@
 import { Socket } from 'socket.io'
 import { z } from 'zod'
 
-import { createMessage } from '@/lib/createMessage.js'
-import { users } from '@/main.js'
-import { messageSchema } from '@/schemas/message.js'
+import { createMessage } from '../lib/createMessage.js'
+import { users } from '../main.js'
+import { messageSchema } from '../schemas/message.js'
 
 // users can create messages in chats they aren't apart of !
 export function onMessage(socket: Socket) {

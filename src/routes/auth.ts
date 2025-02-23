@@ -3,8 +3,8 @@ import { hash, verify } from 'argon2'
 import { Router } from 'express'
 import jwt from 'jsonwebtoken'
 
-import { prisma } from '@/main.js'
-import { parseCredentials } from '@/middleware/parseCredentials.js'
+import { prisma } from '../main.js'
+import { parseCredentials } from '../middleware/parseCredentials.js'
 
 export const authRouter = Router()
 authRouter.use(parseCredentials)

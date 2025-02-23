@@ -1,4 +1,4 @@
-import { prisma } from '@/main.js'
+import { prisma } from '../main.js'
 
 export function createChat(
   user_id: string,

@@ -1,9 +1,9 @@
 import { Socket } from 'socket.io'
 import { z } from 'zod'
 
-import { createChat } from '@/lib/createChat.js'
-import { users } from '@/main.js'
-import { chatSchema } from '@/schemas/chat.js'
+import { createChat } from '../lib/createChat.js'
+import { users } from '../main.js'
+import { chatSchema } from '../schemas/chat.js'
 
 export function onChat(socket: Socket) {
   return async (payload: z.infer<typeof chatSchema>) => {

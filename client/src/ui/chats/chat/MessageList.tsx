@@ -1,14 +1,14 @@
 import { debounce, sum } from 'lodash'
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import Message from '@/ui/chats/chat/Message'
 
 import { usePrevious } from '@/hooks/usePrevious'
 import * as types from '@/types'
 
-const overscan = 10
 const avgRowHeight = 48
 const numToShow = Math.ceil(window.innerHeight / avgRowHeight) + 1
+const overscan = numToShow
 
 type MessageListProps = {
   messages: types.Message[]
@@ -22,6 +22,10 @@ export default function MessageList({ messages, fetchMore }: MessageListProps) {
 
   const scrollableRef = useRef<HTMLDivElement>(null)
   const prev = usePrevious(messages[0].id)
+
+  useEffect(() => {
+    if (numToShow > messages.length) fetchMore()
+  }, [messages.length, fetchMore])
 
   // Handles scrolling when new messages are displayed.
   useLayoutEffect(() => {
@@ -72,7 +76,7 @@ export default function MessageList({ messages, fetchMore }: MessageListProps) {
         const b2 = nodes[i].getBoundingClientRect()
         if (b2.y > bound.bottom) break
 
-        if (i === 0) {
+        if (i === 0 && t.clientHeight + t.scrollTop === t.scrollHeight) {
           start = 0
           _heights.length = 0
         } else {
@@ -92,8 +96,8 @@ export default function MessageList({ messages, fetchMore }: MessageListProps) {
   return (
     <div
       ref={scrollableRef}
-      onScroll={debounce(handleScroll, 100)}
-      className="z-30 flex h-full overflow-y-scroll"
+      onScroll={debounce(handleScroll, 50)}
+      className="z-30 flex h-full overflow-y-scroll py-1"
     >
       <div
         className="relative mt-auto flex w-full flex-col-reverse"

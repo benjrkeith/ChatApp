@@ -1,7 +1,7 @@
 import { Socket } from 'socket.io'
 
-import { getMessages } from '@/lib/getMessages.js'
-import { users } from '@/main.js'
+import { getMessages } from '../lib/getMessages.js'
+import { users } from '../main.js'
 
 type HistoryQuery = {
   chat_id: string

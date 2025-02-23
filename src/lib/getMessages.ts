@@ -1,4 +1,4 @@
-import { prisma } from '@/main.js'
+import { prisma } from '../main.js'
 
 export function getMessages(user_id: string, chat_id: string, skip: number) {
   return prisma.message.findMany({

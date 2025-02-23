@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 
-import { credentialsSchema } from '@/schemas/credentials.js'
+import { credentialsSchema } from '../schemas/credentials.js'
 
 export async function parseCredentials(
   req: Request,

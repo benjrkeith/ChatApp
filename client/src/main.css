@@ -31,12 +31,12 @@ body,
 }
 
 .triangle-left {
-  translate: 25%;
+  translate: 30% 25%;
 }
 
 .triangle-right {
   transform: scale(-1, 1);
-  translate: -25%;
+  translate: -30% 25%;
 }
 
 .hide-scroll {
