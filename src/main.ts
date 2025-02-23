@@ -10,7 +10,7 @@ import { authRouter } from './routes/auth.js'
 
 const corsOptions = {
   credentials: true,
-  origin: 'http://localhost:5173',
+  origin: process.env.CORS_ORIGIN,
 }
 
 // Express App
