@@ -1,6 +1,8 @@
 import { io } from 'socket.io-client'
 
-export const socket = io('http://localhost:3000', {
+import { BASE_URL } from '@/lib'
+
+export const socket = io(BASE_URL, {
   withCredentials: true,
   autoConnect: false,
 })
