@@ -1,6 +1,6 @@
 import { Link } from 'react-router'
 
-interface FooterProps {
+type FooterProps = {
   text: string
   link: {
     text: string
@@ -8,18 +8,18 @@ interface FooterProps {
   }
 }
 
-export default function Footer({ text, link }: FooterProps) {
+export default function Footer(props: FooterProps) {
+  const { text, link } = props
+
   return (
-    <div className="flex grow p-1">
-      <p className="mx-auto mt-auto text-sm">
-        {text}{' '}
-        <Link
-          to={link.to}
-          className="font-bold text-cyan-500 hover:text-cyan-600"
-        >
-          {link.text}
-        </Link>
-      </p>
-    </div>
+    <footer className="mx-auto p-1 text-sm">
+      {text}{' '}
+      <Link
+        to={link.to}
+        className="font-bold text-cyan-500 hover:text-cyan-700"
+      >
+        {link.text}
+      </Link>
+    </footer>
   )
 }

@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export function extractErrors(
+export function extractZodErrors(
   error: z.ZodError<{
     username: string
     password: string
