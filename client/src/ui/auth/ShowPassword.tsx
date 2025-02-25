@@ -6,7 +6,9 @@ type ShowPasswordProps = {
   inputRef: React.RefObject<HTMLInputElement>
 }
 
-export default function ShowPassword({ inputRef }: ShowPasswordProps) {
+export default function ShowPassword(props: ShowPasswordProps) {
+  const { inputRef } = props
+
   const checkboxAction = (checked: boolean) => {
     if (inputRef.current) inputRef.current.type = checked ? 'text' : 'password'
   }
