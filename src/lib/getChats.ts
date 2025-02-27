@@ -1,7 +1,7 @@
 import { prisma } from '../main.js'
 
-export function getChats(user_id: string) {
-  return prisma.chat.findMany({
+export async function getChats(user_id: string) {
+  const res = await prisma.chat.findMany({
     where: {
       memberships: {
         some: {
@@ -10,6 +10,20 @@ export function getChats(user_id: string) {
       },
     },
     include: {
+      memberships: {
+        where: {
+          NOT: {
+            user_id,
+          },
+        },
+        select: {
+          user: {
+            select: {
+              username: true,
+            },
+          },
+        },
+      },
       messages: {
         orderBy: {
           created_at: 'desc',
@@ -35,16 +49,13 @@ export function getChats(user_id: string) {
       updated_at: true,
     },
     orderBy: {
-      updated_at: 'desc',
+      updated_at: 'asc',
     },
   })
-}
 
-// Remove nesting caused by user-chats many-many relation
-// return [...chats].map((chat) => {
-//   const { memberships, ...rest } = chat
-//   return {
-//     ...rest,
-//     users: [...memberships].map((m) => m.user),
-//   }
-// })
+  for (const chat of res) {
+    if (!chat.name) chat.name = chat.memberships[0].user.username
+  }
+
+  return res
+}

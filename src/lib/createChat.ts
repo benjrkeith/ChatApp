@@ -2,8 +2,8 @@ import { prisma } from '../main.js'
 
 export function createChat(
   user_id: string,
-  name: string,
   user_ids: Set<string>,
+  name?: string,
 ) {
   return prisma.chat.create({
     data: {
@@ -22,6 +22,20 @@ export function createChat(
     select: {
       id: true,
       name: true,
+      memberships: {
+        where: {
+          NOT: {
+            user_id,
+          },
+        },
+        select: {
+          user: {
+            select: {
+              username: true,
+            },
+          },
+        },
+      },
       messages: {
         select: {
           author: {

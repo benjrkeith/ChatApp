@@ -6,6 +6,7 @@ import { onMessage } from '../events/onMessage.js'
 import { getChats } from '../lib/getChats.js'
 import { users } from '../main.js'
 import { isBodyJson } from '../middleware/isBodyJSON.js'
+import { onUsers } from './onUsers.js'
 
 export async function onConnection(socket: Socket) {
   const user = users.getUser(socket)
@@ -24,4 +25,5 @@ export async function onConnection(socket: Socket) {
   socket.on('chat', onChat(socket))
   socket.on('message', onMessage(socket))
   socket.on('history', onHistory(socket))
+  socket.on('users', onUsers(socket))
 }
