@@ -4,10 +4,11 @@ import { User } from '@/types/user'
 export type Chat = {
   id: string
   created_at?: string
-  updated_at?: string
+  updated_at: string
   name: string
   avatar: string
   users?: User[]
   messages: Message[]
   fetched?: boolean
+  isRead: boolean
 }
