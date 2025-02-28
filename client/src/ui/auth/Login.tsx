@@ -25,7 +25,7 @@ export default function Login() {
     if (!parsed.success) return setErrors(extractZodErrors(parsed.error))
 
     const status = await login(parsed.data)
-    if (status === 200) navigate('/chats')
+    if (status === 200) navigate('/')
     else if (status === 404) setErrors({ username: 'Account not found.' })
     else if (status === 401) setErrors({ password: 'Password is incorrect.' })
   }

@@ -9,9 +9,11 @@ type UserListProps = {
   action?: UserListAction
 }
 
-export default function UserList({ users, action }: UserListProps) {
+export default function UserList(props: UserListProps) {
+  const { users, action } = props
+
   return (
-    <div className="flex h-full w-full flex-col">
+    <div className="flex w-full flex-col">
       {users.slice(0, NUM_TO_SHOW).map((user) => (
         <UserListEntry key={user.id} user={user} action={action} />
       ))}

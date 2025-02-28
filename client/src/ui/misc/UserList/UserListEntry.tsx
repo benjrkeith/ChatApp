@@ -1,10 +1,10 @@
-import Avatar from '@/ui/chats/misc/Avatar'
+import Avatar from '@/ui/misc/Avatar'
 
 import * as types from '@/types'
 
 export type UserListAction = {
-  text: string
-  colour: string
+  text?: string
+  colour?: string
   callback: (user: types.User) => void
 }
 
@@ -13,7 +13,9 @@ type UserListEntryProps = {
   action?: UserListAction
 }
 
-export default function UserListEntry({ user, action }: UserListEntryProps) {
+export default function UserListEntry(props: UserListEntryProps) {
+  const { user, action } = props
+
   return (
     <button
       onClick={() => action?.callback(user)}

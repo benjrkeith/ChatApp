@@ -5,8 +5,8 @@ import { socket } from '@/lib/socket'
 import * as types from '@/types'
 
 export function useSocket() {
+  const [active, setActive] = useState(true)
   const { setUser, setChats, addChat, addMessage, addMessages } = useStore()
-  const [isSuccessfull, setIsSuccessfull] = useState(true)
 
   useEffect(() => {
     socket.connect()
@@ -20,7 +20,7 @@ export function useSocket() {
     })
 
     socket.on('connect_error', () => {
-      if (!socket.active) setIsSuccessfull(false)
+      if (!socket.active) setActive(false)
     })
 
     socket.on('sync', (payload: types.SyncPayload) => {
@@ -42,5 +42,5 @@ export function useSocket() {
     }
   }, [addChat, addMessage, setChats, addMessages, setUser])
 
-  return isSuccessfull
+  return active
 }
