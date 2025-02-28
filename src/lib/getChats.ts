@@ -11,17 +11,14 @@ export async function getChats(user_id: string) {
     },
     include: {
       memberships: {
-        where: {
-          NOT: {
-            user_id,
-          },
-        },
         select: {
           user: {
             select: {
+              id: true,
               username: true,
             },
           },
+          isRead: true,
         },
       },
       messages: {
@@ -45,17 +42,31 @@ export async function getChats(user_id: string) {
         },
       },
     },
-    omit: {
-      updated_at: true,
-    },
     orderBy: {
       updated_at: 'asc',
     },
   })
 
+  const final = []
   for (const chat of res) {
-    if (!chat.name) chat.name = chat.memberships[0].user.username
+    let isRead
+    const filtered = chat.memberships.filter((m) => {
+      if (m.user.id === user_id) {
+        isRead = m.isRead
+        return false
+      } else return true
+    })
+
+    // Generate default name
+    if (!chat.name) {
+      chat.name = filtered[0].user.username
+      if (filtered.length > 1)
+        chat.name = `${chat.name} + ${filtered.length - 1}`
+    }
+
+    chat.memberships = filtered
+    final.push({ ...chat, isRead })
   }
 
-  return res
+  return final
 }

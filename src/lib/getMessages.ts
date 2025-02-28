@@ -1,7 +1,11 @@
 import { prisma } from '../main.js'
 
-export function getMessages(user_id: string, chat_id: string, skip: number) {
-  return prisma.message.findMany({
+export async function getMessages(
+  user_id: string,
+  chat_id: string,
+  skip: number,
+) {
+  const first = prisma.message.findMany({
     where: {
       chat_id,
       chat: {
@@ -25,4 +29,16 @@ export function getMessages(user_id: string, chat_id: string, skip: number) {
     take: 12,
     skip: skip,
   })
+
+  const second = prisma.membership.update({
+    data: { isRead: true },
+    where: {
+      user_id_chat_id: {
+        user_id,
+        chat_id,
+      },
+    },
+  })
+
+  return (await prisma.$transaction([first, second]))[0]
 }
