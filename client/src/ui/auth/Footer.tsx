@@ -16,7 +16,7 @@ export default function Footer(props: FooterProps) {
       {text}{' '}
       <Link
         to={link.to}
-        className="font-bold text-cyan-500 hover:text-cyan-700"
+        className="font-bold text-cyan-600 hover:text-cyan-800"
       >
         {link.text}
       </Link>
