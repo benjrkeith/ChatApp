@@ -2,7 +2,7 @@ import { clsx } from 'clsx'
 
 import { useStore } from '@/hooks/useStore'
 import { getDateTimeString } from '@/lib/getDateTimeString'
-import { translateSysMessage } from '@/lib/translateSysMessage'
+import { getMessageContent } from '@/lib/getMessageContent'
 import * as types from '@/types'
 
 type MessageProps = {
@@ -22,18 +22,21 @@ export default function Message({ data }: MessageProps) {
       {!isOwnMessage && <div className="triangle-left bg-zinc-700" />}
 
       <div
-        className={clsx('flex w-fit max-w-[60%] gap-3 rounded-md px-3 py-2', {
-          'ml-auto bg-cyan-500': isOwnMessage,
+        className={clsx('flex w-fit max-w-[75%] gap-2 rounded-md px-3 py-1', {
+          'ml-auto bg-cyan-600': isOwnMessage,
           'mr-auto bg-zinc-700': !isOwnMessage,
         })}
       >
-        <p className="">{translateSysMessage(data)}</p>
-        <footer className="mt-auto h-fit text-xs">
-          {getDateTimeString(data.created_at)}
-        </footer>
+        <p className="inline w-full">
+          {getMessageContent(data)}
+
+          <span className="float-end translate-y-2 pb-2 pl-3 text-sm">
+            {getDateTimeString(data.created_at)}
+          </span>
+        </p>
       </div>
 
-      {isOwnMessage && <div className="triangle-right bg-cyan-500"></div>}
+      {isOwnMessage && <div className="triangle-right bg-cyan-600" />}
     </div>
   )
 }

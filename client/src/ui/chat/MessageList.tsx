@@ -1,8 +1,9 @@
 import { debounce, sum } from 'lodash'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
-import Message from '@/ui/chats/chat/Message'
+import Message from '@/ui/chat/Message'
 
+import { useHistory } from '@/hooks/useHistory'
 import { usePrevious } from '@/hooks/usePrevious'
 import * as types from '@/types'
 
@@ -11,21 +12,23 @@ const numToShow = Math.ceil(window.innerHeight / avgRowHeight) + 1
 const overscan = numToShow
 
 type MessageListProps = {
-  messages: types.Message[]
-  fetchMore: () => Promise<void>
+  chat: types.Chat
 }
 
-export default function MessageList({ messages, fetchMore }: MessageListProps) {
+export default function MessageList(props: MessageListProps) {
+  const { chat } = props
+
   const [startIdx, setStartIdx] = useState(0)
   const [prevHeightFromBottom, setPrevHeightFromBottom] = useState(0)
   const [heights, setHeights] = useState<number[]>([])
 
+  const fetchMore = useHistory(chat)
   const scrollableRef = useRef<HTMLDivElement>(null)
-  const prev = usePrevious(messages[0].id)
+  const prev = usePrevious(chat.messages[0].id)
 
   useEffect(() => {
-    if (numToShow > messages.length) fetchMore()
-  }, [messages.length, fetchMore])
+    if (numToShow > chat.messages.length) fetchMore()
+  }, [chat.messages.length, fetchMore])
 
   // Handles scrolling when new messages are displayed.
   useLayoutEffect(() => {
@@ -41,12 +44,12 @@ export default function MessageList({ messages, fetchMore }: MessageListProps) {
       })
     // If we aren't at the bottom, calc new scroll top so it is the same
     // dist from the bottom as before. Only happens on new msgs at top of page.
-    else if (messages[0].id === prev)
+    else if (chat.messages[0].id === prev)
       div.scrollTo({
         top: div.scrollHeight - div.clientHeight - prevHeightFromBottom,
         behavior: 'instant',
       })
-  }, [messages, prev, prevHeightFromBottom])
+  }, [chat.messages, prev, prevHeightFromBottom])
 
   const handleScroll = async (e: React.UIEvent<HTMLDivElement>) => {
     const t = e.target as HTMLDivElement
@@ -104,7 +107,7 @@ export default function MessageList({ messages, fetchMore }: MessageListProps) {
         style={{ paddingBottom: sum(heights) }}
       >
         <div />
-        {messages
+        {chat.messages
           .slice(
             Math.max(0, startIdx - overscan),
             startIdx + numToShow + overscan,
