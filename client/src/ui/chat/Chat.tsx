@@ -1,9 +1,9 @@
 import { useCallback, useEffect } from 'react'
 import { Navigate } from 'react-router'
 
-import CreateMessage from '@/ui/chats/chat/CreateMessage'
-import MessageList from '@/ui/chats/chat/MessageList'
-import TitleBar from '@/ui/chats/chat/TitleBar'
+import CreateMessage from '@/ui/chat/CreateMessage'
+import MessageList from '@/ui/chat/MessageList'
+import TitleBar from '@/ui/chat/TitleBar'
 
 import { useStore } from '@/hooks/useStore'
 import { getHistory } from '@/lib/getHistory'

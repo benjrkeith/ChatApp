@@ -35,7 +35,7 @@ export default function Avatar({ name, url, size, style }: AvatarProps) {
           ...base_style,
           backgroundColor: colour,
         }}
-        className={clsx('my-auto flex aspect-square', {
+        className={clsx('pointer-events-none my-auto flex aspect-square', {
           'text-black': useBlackText,
           'rounded-full': style === 'circle',
           'rounded-lg': style === 'square',
