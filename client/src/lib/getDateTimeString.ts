@@ -13,5 +13,10 @@ export function getDateTimeString(date: string) {
     return Intl.DateTimeFormat('en-gb', { weekday: 'long' }).format(
       lastActivity,
     )
-  else return lastActivity.toLocaleDateString('en-gb')
+  else
+    return lastActivity.toLocaleDateString([], {
+      day: '2-digit',
+      month: '2-digit',
+      year: undefined,
+    })
 }
