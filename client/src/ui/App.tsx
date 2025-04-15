@@ -1,18 +1,20 @@
 import clsx from 'clsx'
 import { Navigate } from 'react-router'
 
+import ChatPage from '@/ui/chat/Page'
+import Loading from '@/ui/misc/Loading'
+import Resizeable from '@/ui/misc/Resizeable'
 import Sidebar from '@/ui/sidebar/Layout'
 
 import { useChat } from '@/hooks/useChat'
 import { useSocket } from '@/hooks/useSocket'
 
-import ChatPage from './chat/Page'
-import Resizeable from './misc/Resizeable'
-
 export default function App() {
   const chat = useChat()
-  const active = useSocket()
+  const [active, connected] = useSocket()
+
   if (!active) return <Navigate to="/auth" />
+  else if (!connected) return <Loading />
 
   return (
     <div

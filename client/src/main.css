@@ -37,8 +37,7 @@ body,
 }
 
 .triangle-right {
-  transform: scale(-1, 1);
-  translate: -30% 25%;
+  transform: scale(-1, 1) translate(30%, 25%);
 }
 
 .hide-scroll {
@@ -58,4 +57,24 @@ body,
 .filter-cyan {
   filter: brightness(0) saturate(100%) invert(76%) sepia(46%) saturate(6189%)
     hue-rotate(147deg) brightness(92%) contrast(101%);
+}
+
+.loading {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #fff;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

@@ -6,6 +6,8 @@ import * as types from '@/types'
 
 export function useSocket() {
   const [active, setActive] = useState(true)
+  const [connected, setConnected] = useState(false)
+
   const { setUser, setChats, addChat, addMessage, addMessages } = useStore()
 
   useEffect(() => {
@@ -13,6 +15,7 @@ export function useSocket() {
 
     socket.on('connect', () => {
       console.debug('Socket connected')
+      setConnected(true)
     })
 
     socket.on('disconnect', () => {
@@ -42,5 +45,5 @@ export function useSocket() {
     }
   }, [addChat, addMessage, setChats, addMessages, setUser])
 
-  return active
+  return [active, connected]
 }
