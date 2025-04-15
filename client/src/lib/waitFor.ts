@@ -7,6 +7,6 @@ export function waitFor(event: string, payload: unknown) {
       socket.off(event)
       resolve(result)
     })
-    setTimeout(reject, 1000)
+    setTimeout(reject, 2000)
   })
 }
