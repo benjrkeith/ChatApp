@@ -25,7 +25,7 @@ export default function Register() {
     if (!parsed.success) return setErrors(extractZodErrors(parsed.error))
 
     const status = await register(parsed.data)
-    if (status === 201) navigate('/auth/login')
+    if (status === 201) navigate('/chat')
     else if (status === 409) setErrors({ username: 'Username is taken.' })
     else if (status === 500) setErrors({ username: 'Please try again later.' })
   }

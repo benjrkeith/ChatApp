@@ -1,3 +1,4 @@
+import { User } from '@prisma/client'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { hash, verify } from 'argon2'
 import { Router } from 'express'
@@ -9,20 +10,27 @@ import { parseCredentials } from '../middleware/parseCredentials.js'
 export const authRouter = Router()
 authRouter.use(parseCredentials)
 
+function signToken(user: Partial<User>) {
+  return jwt.sign({ user }, process.env.JWT_SECRET as string, {
+    expiresIn: Number(process.env.JWT_EXPIRES_IN),
+  })
+}
+
 authRouter.post('/register', async (req, res) => {
   const { username, password } = res.locals.credentials
   const passwordHash = await hash(password)
 
   try {
-    await prisma.user.create({
+    const user = await prisma.user.create({
       data: {
         username,
         password: passwordHash,
       },
-      select: { id: true },
+      omit: { password: true },
     })
 
-    res.sendStatus(201)
+    const token = signToken(user)
+    res.cookie('token', token, { httpOnly: true }).sendStatus(201)
   } catch (error) {
     if (!(error instanceof PrismaClientKnownRequestError)) throw error
     else if (error.code === 'P2002') res.sendStatus(409)
@@ -54,9 +62,7 @@ authRouter.post('/login', async (req, res) => {
     return
   }
 
-  const token = jwt.sign({ user: rest }, process.env.JWT_SECRET as string, {
-    expiresIn: Number(process.env.JWT_EXPIRES_IN),
-  })
+  const token = signToken(rest)
   res.cookie('token', token, { httpOnly: true }).sendStatus(200)
 
   await prisma.user.update({
