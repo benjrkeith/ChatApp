@@ -20,6 +20,7 @@ export function createChat(
       },
     },
     select: {
+      updated_at: true,
       id: true,
       name: true,
       memberships: {
