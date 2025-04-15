@@ -32,10 +32,10 @@ export default function Chat({ chat }: ChatProps) {
   return (
     <div className="relative z-20 flex h-full w-full flex-col overflow-hidden">
       <div className="absolute z-10 h-full w-full bg-[url(/chat-bg.svg)] opacity-5" />
-      <TitleBar data={chat} />
+      <TitleBar name={chat.name} avatar={chat.avatar} />
 
       {(chat.messages.length > 1 || chat.fetched) && (
-        <MessageList messages={chat.messages} fetchMore={fetchMore} />
+        <MessageList chat={chat} />
       )}
 
       <CreateMessage />
