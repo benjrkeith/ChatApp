@@ -1,17 +1,19 @@
 import { useEffect } from 'react'
 
 import { useStore } from '@/hooks/useStore'
-import { waitFor } from '@/lib/waitFor'
+import { getUsers } from '@/lib/getUsers'
 import * as types from '@/types'
 
 export function useUserList() {
   const { users, setUsers } = useStore()
 
   useEffect(() => {
-    waitFor('users', {}).then((users) => {
+    const inner = async () => {
+      const users = await getUsers()
       setUsers(users as types.User[])
-    })
-  }, [setUsers])
+    }
+    if (users.length === 0) setTimeout(async () => await inner(), 100)
+  }, [users.length, setUsers])
 
   return users
 }

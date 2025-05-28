@@ -22,10 +22,13 @@ export default function Message({ data }: MessageProps) {
       {!isOwnMessage && <div className="triangle-left bg-zinc-700" />}
 
       <div
-        className={clsx('flex w-fit max-w-[75%] gap-2 rounded-md px-3 py-1', {
-          'ml-auto bg-cyan-600': isOwnMessage,
-          'mr-auto bg-zinc-700': !isOwnMessage,
-        })}
+        className={clsx(
+          'flex w-fit max-w-[75%] gap-2 rounded-md px-3 pt-2 pb-1',
+          {
+            'ml-auto bg-cyan-600': isOwnMessage,
+            'mr-auto bg-zinc-700': !isOwnMessage,
+          },
+        )}
       >
         <p className="inline w-full">
           {getMessageContent(data)}
